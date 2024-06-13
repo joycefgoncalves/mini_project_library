@@ -1,0 +1,308 @@
+#task 1
+
+from menu import Menu
+
+def main():
+    library_menu = Menu()
+    library_menu.run()
+
+if __name__ == "__main__":
+    main()
+
+
+#task 2
+
+class Book:
+    def __init__(self, title, author, isbn, genre, publication_date):
+        self.title = title
+        self.author = author
+        self.isbn = isbn
+        self.genre = genre
+        self.publication_date = publication_date
+        self.available = True
+
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+
+    def borrow_book(self):
+        if self.available:
+            self.available = False
+            print("Book borrowed successfully.")
+        else:
+            print("Sorry, the book is not available.")
+
+    def return_book(self):
+        if not self.available:
+            self.available = True
+            print("Book returned successfully.")
+        else:
+            print("The book is already available.")
+
+
+#task 3
+
+class User:
+    def __init__(self, name, library_id):
+        self.name = name
+        self.library_id = library_id
+        self.borrowed_books = []
+
+    def __str__(self):
+        return self.name
+
+    def borrow_book(self, book):
+        if book.available:
+            self.borrowed_books.append(book)
+            book.borrow_book()
+        else:
+            print("Sorry, the book is not available.")
+
+    def return_book(self, book):
+        if book in self.borrowed_books:
+            self.borrowed_books.remove(book)
+            book.return_book()
+        else:
+            print("You haven't borrowed this book.")
+
+#task 3
+
+class Author:
+    def __init__(self, name, biography):
+        self.name = name
+        self.biography = biography
+
+    def __str__(self):
+        return self.name
+
+
+#task 4
+
+class Genre:
+    def __init__(self, name, description, category):
+        self.name = name
+        self.description = description
+        self.category = category
+
+    def __str__(self):
+        return self.name
+
+
+#task 5
+
+from book import Book
+from user import User
+from author import Author
+from genre import Genre
+
+class Menu:
+    def __init__(self):
+        self.books = []
+        self.users = []
+        self.authors = []
+        self.genres = []
+
+    def display_main_menu(self):
+        print("\nWelcome to the Library Management System!")
+        print("Main Menu:")
+        print("1. Book Operations")
+        print("2. User Operations")
+        print("3. Author Operations")
+        print("4. Genre Operations")
+        print("5. Quit")
+
+    def run(self):
+        while True:
+            self.display_main_menu()
+            choice = input("Enter your choice: ")
+            if choice == "1":
+                self.book_operations_menu()
+            elif choice == "2":
+                self.user_operations_menu()
+            elif choice == "3":
+                self.author_operations_menu()
+            elif choice == "4":
+                self.genre_operations_menu()
+            elif choice == "5":
+                print("Thank you for using the Library Management System. Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please enter a number between 1 and 5.")
+
+    def book_operations_menu(self):
+        print("\nBook Operations:")
+        print("1. Add a new book")
+        print("2. Borrow a book")
+        print("3. Return a book")
+        print("4. Search for a book")
+        print("5. Display all books")
+        print("6. Back to main menu")
+
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            self.add_new_book()
+        elif choice == "2":
+            self.borrow_book()
+        elif choice == "3":
+            self.return_book()
+        elif choice == "4":
+            self.search_book()
+        elif choice == "5":
+            self.display_all_books()
+        elif choice == "6":
+            return
+        else:
+            print("Invalid choice. Please enter a number between 1 and 6.")
+
+    def user_operations_menu(self):
+        print("\nUser Operations:")
+        print("1. Add a new user")
+        print("2. View user details")
+        print("3. Display all users")
+        print("4. Back to main menu")
+
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            self.add_new_user()
+        elif choice == "2":
+            self.view_user_details()
+        elif choice == "3":
+            self.display_all_users()
+        elif choice == "4":
+            return
+        else:
+            print("Invalid choice. Please enter a number between 1 and 4.")
+
+    def author_operations_menu(self):
+        print("\nAuthor Operations:")
+        print("1. Add a new author")
+        print("2. View author details")
+        print("3. Display all authors")
+        print("4. Back to main menu")
+
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            self.add_new_author()
+        elif choice == "2":
+            self.view_author_details()
+        elif choice == "3":
+            self.display_all_authors()
+        elif choice == "4":
+            return
+        else:
+            print("Invalid choice. Please enter a number between 1 and 4.")
+
+    def genre_operations_menu(self):
+        print("\nGenre Operations:")
+        print("1. Add a new genre")
+        print("2. View genre details")
+        print("3. Display all genres")
+        print("4. Back to main menu")
+
+        choice = input("Enter your choice: ")
+        if choice == "1":
+            self.add_new_genre()
+        elif choice == "2":
+            self.view_genre_details()
+        elif choice == "3":
+            self.display_all_genres()
+        elif choice == "4":
+            return
+        else:
+            print("Invalid choice. Please enter a number between 1 and 4.")
+
+    def add_new_book(self):
+        title = input("Enter the title of the book: ")
+        author = input("Enter the author of the book: ")
+        isbn = input("Enter the ISBN of the book: ")
+        genre = input("Enter the genre of the book: ")
+        publication_date = input("Enter the publication date of the book: ")
+        book = Book(title, author, isbn, genre, publication_date)
+        self.books.append(book)
+        print("Book added successfully.")
+
+    def borrow_book(self):
+        title = input("Enter the title of the book to borrow: ")
+        for book in self.books:
+            if book.title == title:
+                book.borrow_book()
+                return
+        print("Book not found.")
+
+    def return_book(self):
+        title = input("Enter the title of the book to return: ")
+        for book in self.books:
+            if book.title == title:
+                book.return_book()
+                return
+        print("Book not found.")
+
+    def search_book(self):
+        keyword = input("Enter the title or ISBN of the book to search: ")
+        for book in self.books:
+            if keyword.lower() in book.title.lower() or keyword.lower() == book.isbn.lower():
+                print(book)
+                return
+        print("Book not found.")
+
+    def display_all_books(self):
+        print("\nAll Books:")
+        for book in self.books:
+            print(book)
+
+    def add_new_user(self):
+        name = input("Enter the name of the user: ")
+        library_id = input("Enter the library ID of the user: ")
+        user = User(name, library_id)
+        self.users.append(user)
+        print("User added successfully.")
+
+    def view_user_details(self):
+        name = input("Enter the name of the user to view details: ")
+        for user in self.users:
+            if user.name == name:
+                print(f"Name: {user.name}")
+                print(f"Library ID: {user.library_id}")
+                print("Borrowed Books:")
+                for book in user.borrowed_books:
+                    print(book)
+                return
+        print("User not found.")
+
+    def display_all_users(self):
+        print("\nAll Users:")
+        for user in self.users:
+            print(user)
+
+    def add_new_author(self):
+        name = input("Enter the name of the author: ")
+        biography = input("Enter the biography of the author: ")
+        author = Author(name, biography)
+        self.authors.append(author)
+        print("Author added successfully.")
+
+    def view_author_details(self):
+        name = input("Enter the name of the author to view details: ")
+        for author in self.authors:
+            if author.name == name:
+                print(f"Name: {author.name}")
+                print(f"Biography: {author.biography}")
+                return
+        print("Author not found.")
+
+    def display_all_authors(self):
+        print("\nAll Authors:")
+        for author in self.authors:
+            print(author)
+
+    def add_new_genre(self):
+        name = input("Enter the name of the genre: ")
+        description = input("Enter the description of the genre: ")
+        category = input("Enter the category of the genre: ")
+        genre = Genre(name, description, category)
+        self.genres.append(genre)
+        print("Genre added successfully.")
+
+    def view_genre_details(self):
+        name = input("Enter the name of the genre to view details: ")
+        for genre in self.genres:
+            if genre.name == name
